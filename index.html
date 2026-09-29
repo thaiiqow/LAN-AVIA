@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LANĐAVIA — Official Airline of Landai, Sakhalin Oblast</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        landai: {
+                            navy: '#061838',
+                            blue: '#0A369D',
+                            sky: '#4A90E2',
+                            ice: '#F4F7FC',
+                            gold: '#D4AF37'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFFFFF;
+            color: #061838;
+        }
+
+        /* Glassmorphism & Custom scrollbars */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        .glass-dark {
+            background: rgba(6, 24, 56, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F4F7FC;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0A369D;
+            border-radius: 4px;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(180deg, rgba(6,24,56,0.3) 0%, rgba(6,24,56,0.7) 100%);
+        }
+
+        .seat-btn.selected {
+            background-color: #0A369D !important;
+            color: white !important;
+        }
+        .seat-btn.occupied {
+            background-color: #CBD5E1 !important;
+            cursor: not-allowed !important;
+        }
+    </style>
+</head>
+<body class="bg-white text-landai-navy antialiased selection:bg-landai-blue selection:text-white">
+
+    <!-- HEADER NAVBAR -->
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass-panel border-b border-slate-200/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo -->
+                <a href="#home" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 bg-landai-blue rounded-xl flex items-center justify-center text-white shadow-md transform group-hover:rotate-6 transition-transform">
+                        <i class="fa-solid font-bold text-xl">L</i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-black tracking-widest text-landai-navy block leading-none">LANĐAVIA</span>
+                        <span class="text-[10px] tracking-wider text-landai-sky font-semibold block uppercase" data-i18n="tagline_sub">AIRLINES OF LANDAI</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden lg:flex items-center space-x-1 xl:space-x-4">
+                    <a href="#home" class="px-3 py-2 text-sm font-semibold text-landai-navy hover:text-landai-blue transition-colors" data-i18n="nav_home">Главная</a>
+                    <a href="#booking" class="px-3 py-2 text-sm font-semibold text-landai-navy hover:text-landai-blue transition-colors" data-i18n="nav_tickets">Билеты</a>
+                    <a href="#flights" class="px-3 py-2 text-sm font-semibold text-landai-navy hover:text-landai-blue transition-colors" data-i18n="nav_flights">Рейсы</a>
+                    <a href="#hub" class="px-3 py-2 text-sm font-semibold text-landai-navy hover:text-landai-blue transition-colors" data-i18n="nav_hub">Наш хаб</a>
+                    <a href="#fleet" class="px-3 py-2 text-sm font-semibold text-landai-navy hover:text-landai-blue transition-colors" data-i18n="nav_fleet">Наш флот</a>
+                    <a href="#magazine" class="px-3 py-2 text-sm font-semibold text-landai-navy hover:text-landai-blue transition-colors" data-i18n="nav_magazine">Журнал</a>
+                    <a href="#airport" class="px-3 py-2 text-sm font-semibold text-landai-navy hover:text-landai-blue transition-colors" data-i18n="nav_airport">Аэропорт</a>
+                    <a href="#hotels" class="px-3 py-2 text-sm font-semibold text-landai-navy hover:text-landai-blue transition-colors" data-i18n="nav_hotels">Отели</a>
+                    <a href="#transport" class="px-3 py-2 text-sm font-semibold text-landai-navy hover:text-landai-blue transition-colors" data-i18n="nav_transport">Транспорт</a>
+                </nav>
+
+                <!-- Right Side Interactive Controls -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <!-- Language Selector -->
+                    <div class="relative group">
+                        <button id="langSelectBtn" class="flex items-center space-x-2 bg-landai-ice border border-slate-200 px-3 py-2 rounded-xl text-sm font-medium hover:border-landai-blue transition">
+                            <i class="fa-solid fa-globe text-landai-blue"></i>
+                            <span id="currentLangLabel">Lanđajzỹa</span>
+                            <i class="fa-solid fa-chevron-down text-xs text-slate-400"></i>
+                        </button>
+                        <div class="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 hidden group-hover:block transition-all z-50 overflow-hidden">
+                            <button onclick="setLanguage('ld')" class="w-full text-left px-4 py-2.5 text-sm hover:bg-landai-ice flex items-center justify-between font-medium">
+                                Lanđajzỹa <span class="text-xs px-2 py-0.5 bg-landai-blue text-white rounded">DEFAULT</span>
+                            </button>
+                            <button onclick="setLanguage('ru')" class="w-full text-left px-4 py-2.5 text-sm hover:bg-landai-ice flex items-center justify-between font-medium">
+                                Русский <span>🇷🇺</span>
+                            </button>
+                            <button onclick="setLanguage('en')" class="w-full text-left px-4 py-2.5 text-sm hover:bg-landai-ice flex items-center justify-between font-medium">
+                                English <span>🇬🇧</span>
+                            </button>
+                            <button onclick="setLanguage('vi')" class="w-full text-left px-4 py-2.5 text-sm hover:bg-landai-ice flex items-center justify-between font-medium">
+                                Tiếng Việt <span>🇻🇳</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Hamburger Button -->
+                <div class="lg:hidden flex items-center space-x-2">
+                    <button id="mobileMenuBtn" class="p-2.5 rounded-xl text-landai-navy hover:bg-landai-ice">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobileMenu" class="hidden lg:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-3">
+            <a href="#home" onclick="closeMobileMenu()" class="block px-3 py-2 rounded-lg font-medium hover:bg-landai-ice" data-i18n="nav_home">Главная</a>
+            <a href="#booking" onclick="closeMobileMenu()" class="block px-3 py-2 rounded-lg font-medium hover:bg-landai-ice" data-i18n="nav_tickets">Билеты</a>
+            <a href="#flights" onclick="closeMobileMenu()" class="block px-3 py-2 rounded-lg font-medium hover:bg-landai-ice" data-i18n="nav_flights">Рейсы</a>
+            <a href="#hub" onclick="closeMobileMenu()" class="block px-3 py-2 rounded-lg font-medium hover:bg-landai-ice" data-i18n="nav_hub">Наш хаб</a>
+            <a href="#fleet" onclick="closeMobileMenu()" class="block px-3 py-2 rounded-lg font-medium hover:bg-landai-ice" data-i18n="nav_fleet">Наш флот</a>
+            <a href="#magazine" onclick="closeMobileMenu()" class="block px-3 py-2 rounded-lg font-medium hover:bg-landai-ice" data-i18n="nav_magazine">Журнал</a>
+            <a href="#airport" onclick="closeMobileMenu()" class="block px-3 py-2 rounded-lg font-medium hover:bg-landai-ice" data-i18n="nav_airport">Аэропорт</a>
+            <a href="#hotels" onclick="closeMobileMenu()" class="block px-3 py-2 rounded-lg font-medium hover:bg-landai-ice" data-i18n="nav_hotels">Отели</a>
+            <a href="#transport" onclick="closeMobileMenu()" class="block px-3 py-2 rounded-lg font-medium hover:bg-landai-ice" data-i18n="nav_transport">Транспорт</a>
+
+            <div class="pt-4 border-t border-slate-100 flex flex-wrap gap-2">
+                <button onclick="setLanguage('ld')" class="px-3 py-1.5 text-xs bg-landai-ice rounded-lg font-bold">Lanđajzỹa</button>
+                <button onclick="setLanguage('ru')" class="px-3 py-1.5 text-xs bg-landai-ice rounded-lg font-bold">Русский</button>
+                <button onclick="setLanguage('en')" class="px-3 py-1.5 text-xs bg-landai-ice rounded-lg font-bold">English</button>
+                <button onclick="setLanguage('vi')" class="px-3 py-1.5 text-xs bg-landai-ice rounded-lg font-bold">Tiếng Việt</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="home" class="relative pt-24 min-h-screen flex flex-col justify-between overflow-hidden bg-landai-navy">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1542296332-2e4473faf563?q=80&w=2070&auto=format&fit=crop" 
+                 alt="LANĐAVIA Aircraft flying over Landai coastline" 
+                 class="w-full h-full object-cover opacity-60">
+            <div class="absolute inset-0 hero-gradient"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 w-full flex-grow flex flex-col justify-center">
+            <div class="max-w-3xl">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-white text-xs font-semibold uppercase tracking-wider mb-6 border border-white/20">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span data-i18n="hero_badge">Главный авиаперевозчик Ландая</span>
+                </div>
+                
+                <h1 class="text-5xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight leading-none mb-4">
+                    Fly beyond.<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-blue-200 to-white">Discover Landai.</span>
+                </h1>
+                
+                <p class="text-lg sm:text-xl text-slate-200 font-light mb-8 max-w-2xl" data-i18n="hero_subtitle">
+                    «Путешествуйте из Ландая по России и всему миру на крыльях комфорта и инноваций.»
+                </p>
+            </div>
+
+            <!-- SEARCH WIDGET CARD -->
+            <div id="booking" class="mt-4 bg-white/95 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/40">
+                
+                <!-- Toggle Mode (Flight / Hotel) -->
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+                    <div class="flex space-x-2 bg-slate-100 p-1 rounded-xl">
+                        <button id="searchTabFlight" onclick="toggleSearchTab('flight')" class="px-5 py-2.5 rounded-lg text-sm font-bold bg-landai-blue text-white shadow-md transition-all">
+                            <i class="fa-solid fa-plane-departure mr-2"></i> <span data-i18n="tab_airplane">Самолёт</span>
+                        </button>
+                        <button id="searchTabHotel" onclick="toggleSearchTab('hotel')" class="px-5 py-2.5 rounded-lg text-sm font-bold text-slate-600 hover:text-landai-navy transition-all">
+                            <i class="fa-solid fa-hotel mr-2"></i> <span data-i18n="tab_hotel">Отель</span>
+                        </button>
+                    </div>
+
+                    <!-- One Way / Round Trip Toggle -->
+                    <div id="tripTypeContainer" class="flex items-center space-x-4 text-sm font-semibold text-slate-600">
+                        <label class="flex items-center cursor-pointer space-x-2">
+                            <input type="radio" name="tripType" value="round" checked class="accent-landai-blue" onchange="toggleReturnType(true)">
+                            <span data-i18n="trip_round">Туда и обратно</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer space-x-2">
+                            <input type="radio" name="tripType" value="oneway" class="accent-landai-blue" onchange="toggleReturnType(false)">
+                            <span data-i18n="trip_oneway">В одну сторону</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Flight Search Form -->
+                <form id="flightSearchForm" onsubmit="executeFlightSearch(event)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+                    <!-- From -->
+                    <div class="lg:col-span-1">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1" data-i18n="lbl_from">Откуда</label>
+                        <div class="relative">
+                            <select id="searchFrom" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-semibold text-landai-navy focus:ring-2 focus:ring-landai-blue focus:bg-white outline-none transition">
+                                <option value="LND" selected>Ландай (LND)</option>
+                                <option value="VVO">Владивосток (VVO)</option>
+                                <option value="SVO">Москва (SVO)</option>
+                                <option value="PEK">Пекин (PEK)</option>
+                                <option value="CXR">Камрань (CXR)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- To -->
+                    <div class="lg:col-span-1">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1" data-i18n="lbl_to">Куда</label>
+                        <div class="relative">
+                            <select id="searchTo" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-semibold text-landai-navy focus:ring-2 focus:ring-landai-blue focus:bg-white outline-none transition">
+                                <option value="CXR" selected>Камрань (CXR)</option>
+                                <option value="LND">Ландай (LND)</option>
+                                <option value="PEK">Пекин (PEK)</option>
+                                <option value="BKK">Бангкок (BKK)</option>
+                                <option value="VVO">Владивосток (VVO)</option>
+                                <option value="SVO">Москва (SVO)</option>
+                                <option value="KHV">Хабаровск (KHV)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Departure Date -->
+                    <div class="lg:col-span-1">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1" data-i18n="lbl_dep_date">Дата вылета</label>
+                        <input type="date" id="searchDepDate" value="2043-10-15" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-semibold text-landai-navy focus:ring-2 focus:ring-landai-blue focus:bg-white outline-none transition">
+                    </div>
+
+                    <!-- Return Date -->
+                    <div class="lg:col-span-1" id="returnDateBox">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1" data-i18n="lbl_ret_date">Дата возвращения</label>
+                        <input type="date" id="searchRetDate" value="2043-10-25" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-semibold text-landai-navy focus:ring-2 focus:ring-landai-blue focus:bg-white outline-none transition">
+                    </div>
+
+                    <!-- Passengers -->
+                    <div class="lg:col-span-1">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1" data-i18n="lbl_passengers">Пассажиры</label>
+                        <select id="searchPassengers" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-semibold text-landai-navy focus:ring-2 focus:ring-landai-blue focus:bg-white outline-none transition">
+                            <option value="1">1 Пассажир</option>
+                            <option value="2">2 Пассажира</option>
+                            <option value="3">3 Пассажира</option>
+                            <option value="4">4+ Пассажиров</option>
+                        </select>
+                    </div>
+
+                    <!-- Search Button -->
+                    <div class="lg:col-span-1 flex items-end">
+                        <button type="submit" class="w-full bg-landai-blue hover:bg-blue-800 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center space-x-2 group">
+                            <span data-i18n="btn_find_flights">Найти рейсы</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Wave divider -->
+        <div class="w-full overflow-hidden leading-none z-10">
+            <svg class="relative block w-full h-12 text-white" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,121.6,200,115.8,241,112.3,281.82,90.2,321.39,56.44Z" fill="currentColor"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- SECTION 3: OUR HUB (Хаб LANĐAVIA) -->
+    <section id="hub" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Hub Information -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="inline-flex items-center space-x-2 text-landai-blue font-bold text-sm tracking-wider uppercase bg-landai-ice px-3 py-1 rounded-lg">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span data-i18n="hub_badge">Главный авиационный хаб</span>
+                    </div>
+                    
+                    <h2 class="text-4xl font-extrabold text-landai-navy tracking-tight" data-i18n="hub_title">
+                        Международный Аэропорт Ландай
+                    </h2>
+                    
+                    <p class="text-slate-600 leading-relaxed" data-i18n="hub_desc">
+                        Ландай (Сахалинская область, Россия) — ультрасовременный транспортно-логистический узел Дальнего Востока. Отсюда LANĐAVIA соединяет острова и материк, связывая крупнейшие мегаполисы России и ключевые столицы Азиатско-Тихоокеанского региона.
+                    </p>
+
+                    <!-- Statistics Grid -->
+                    <div class="grid grid-cols-2 gap-4 pt-4">
+                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                            <div class="text-3xl font-black text-landai-blue mb-1">23+</div>
+                            <div class="text-xs text-slate-500 font-semibold" data-i18n="hub_stat_dest">Прямых направлений</div>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                            <div class="text-3xl font-black text-landai-blue mb-1">12M</div>
+                            <div class="text-xs text-slate-500 font-semibold" data-i18n="hub_stat_pax">Пассажиров в год</div>
+                        </div>
+                    </div>
+
+                    <!-- Destination Tabs Filter for Interactive Map -->
+                    <div class="pt-4">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" data-i18n="hub_filter_label">Фильтр направлений:</label>
+                        <div class="flex space-x-2">
+                            <button onclick="filterMapRoutes('all')" id="mapFilterAll" class="px-4 py-2 text-xs font-bold rounded-xl bg-landai-navy text-white shadow">Все</button>
+                            <button onclick="filterMapRoutes('domestic')" id="mapFilterDom" class="px-4 py-2 text-xs font-bold rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200">Россия</button>
+                            <button onclick="filterMapRoutes('intl')" id="mapFilterIntl" class="px-4 py-2 text-xs font-bold rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200">Международные</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Route Map Canvas Container -->
+                <div class="lg:col-span-7 bg-landai-navy rounded-3xl p-6 shadow-2xl relative overflow-hidden border border-slate-800">
+                    <div class="flex items-center justify-between mb-4 text-white">
+                        <span class="text-xs font-bold uppercase tracking-widest text-slate-400 flex items-center">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2"></span>
+                            <span data-i18n="hub_map_title">Интерактивная карта маршрутов</span>
+                        </span>
+                        <span class="text-xs text-slate-400">Хаб: Ландай (LND)</span>
+                    </div>
+
+                    <!-- Canvas Visualization -->
+                    <div class="relative w-full h-[380px] bg-[#030F26] rounded-2xl overflow-hidden border border-white/10">
+                        <canvas id="routeMapCanvas" class="w-full h-full cursor-crosshair"></canvas>
+                        
+                        <!-- Overlay Tooltip -->
+                        <div id="mapTooltip" class="absolute hidden bg-white text-landai-navy text-xs font-bold px-3 py-1.5 rounded-lg shadow-xl pointer-events-none z-20 border border-slate-200">
+                            <!-- Tooltip Text -->
+                        </div>
+                    </div>
+
+                    <div class="mt-4 flex flex-wrap gap-2 text-[11px] text-slate-300">
+                        <span class="px-2 py-1 bg-white/10 rounded">📍 Ландай (Центральный хаб)</span>
+                        <span class="px-2 py-1 bg-sky-500/20 rounded text-sky-300">🔵 Внутренние рейсы</span>
+                        <span class="px-2 py-1 bg-amber-500/20 rounded text-amber-300">🟡 Международные</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: INFLIGHT MAGAZINE (Vitlẻt) -->
+    <section id="magazine" class="py-20 bg-landai-ice border-y border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <div class="text-landai-blue font-bold text-sm tracking-widest uppercase mb-2">LANĐAVIA Media</div>
+                <h2 class="text-4xl font-extrabold text-landai-navy tracking-tight">Бортовой журнал Vitlẻt</h2>
+                <p class="text-slate-600 mt-2" data-i18n="mag_subtitle">Эксклюзивные статьи о путешествиях, культуре Ландая и современной авиации.</p>
+            </div>
+
+            <div class="bg-white rounded-3xl p-8 sm:p-10 shadow-xl border border-slate-200/80 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <!-- Cover Preview -->
+                <div class="lg:col-span-5 relative group">
+                    <div class="aspect-[3/4] bg-gradient-to-br from-landai-navy to-landai-blue rounded-2xl overflow-hidden shadow-2xl relative flex flex-col justify-between p-8 text-white border-4 border-white">
+                        <div class="flex justify-between items-start">
+                            <span class="text-2xl font-black tracking-widest">Vitlẻt</span>
+                            <span class="text-xs bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full font-bold">Q3 2043</span>
+                        </div>
+                        <div class="space-y-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-sky-300">Спецвыпуск</span>
+                            <h3 class="text-3xl font-extrabold leading-tight">Сокровища Сахалина & Будущее Ландая</h3>
+                            <p class="text-xs text-slate-300">Интервью с шеф-пилотами, гастрономия Востока и новые эко-маршруты.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info & Actions -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-block px-3 py-1 bg-landai-ice text-landai-blue text-xs font-bold rounded-lg uppercase">Текущий выпуск</div>
+                    <h3 class="text-3xl font-bold text-landai-navy">Vitlẻt · Выпуск #142 (Q3 2043)</h3>
+                    
+                    <div class="grid grid-cols-3 gap-4 py-4 border-y border-slate-100 text-center">
+                        <div>
+                            <span class="block text-xs text-slate-400 font-semibold uppercase">Выпуск</span>
+                            <span class="text-lg font-bold text-landai-navy">Осень 2043</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs text-slate-400 font-semibold uppercase">Страниц</span>
+                            <span class="text-lg font-bold text-landai-navy">128 стр.</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs text-slate-400 font-semibold uppercase">Формат</span>
+                            <span class="text-lg font-bold text-landai-navy">Digital PDF</span>
+                        </div>
+                    </div>
+
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Погрузитесь в увлекательные истории о дальневосточных архипелагах, уникальном кулинарном наследии Ландая и технологических достижениях обновленного флота LANĐAVIA.
+                    </p>
+
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <button onclick="openMagazineViewer()" class="bg-landai-blue hover:bg-blue-800 text-white font-bold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition flex items-center space-x-2">
+                            <i class="fa-solid fa-book-open"></i>
+                            <span data-i18n="btn_read_online">Читать онлайн</span>
+                        </button>
+                        <button onclick="downloadPdfSimulation()" class="bg-slate-100 hover:bg-slate-200 text-landai-navy font-bold px-6 py-3 rounded-xl transition flex items-center space-x-2 border border-slate-200">
+                            <i class="fa-solid fa-file-pdf text-red-500"></i>
+                            <span data-i18n="btn_download_pdf">Скачать журнал PDF</span>
+                        </button>
+                    </div>
+
+                    <!-- Archive List -->
+                    <div class="pt-4">
+                        <h4 class="text-xs font-bold uppercase text-slate-400 tracking-wider mb-3">Архив прошлых выпусков:</h4>
+                        <div class="flex space-x-3 overflow-x-auto pb-2">
+                            <span class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700 rounded-lg cursor-pointer">Q2 2043 (116 стр)</span>
+                            <span class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700 rounded-lg cursor-pointer">Q1 2043 (120 стр)</span>
+                            <span class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700 rounded-lg cursor-pointer">Q4 2042 (132 стр)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: OUR FLEET (Наш флот) -->
+    <section id="fleet" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <div class="text-landai-blue font-bold text-sm tracking-widest uppercase mb-2">LANĐAVIA Air Fleet</div>
+                    <h2 class="text-4xl font-extrabold text-landai-navy tracking-tight" data-i18n="fleet_title">Наш флот</h2>
+                    <p class="text-slate-600 mt-2" data-i18n="fleet_subtitle">Современные, тихие и высокоэффективные лайнеры ведущих мировых производителей.</p>
+                </div>
+            </div>
+
+            <!-- Fleet Grid -->
+            <div id="fleetGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Fleet Cards Populated via Javascript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: ACTIVE FLIGHTS (Рейсы) -->
+    <section id="flights" class="py-20 bg-landai-ice">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
+                <div>
+                    <div class="text-landai-blue font-bold text-sm tracking-widest uppercase mb-2">Live Schedule</div>
+                    <h2 class="text-4xl font-extrabold text-landai-navy tracking-tight">Активные рейсы LANĐAVIA</h2>
+                    <p class="text-slate-600 mt-2">Доступные рейсы с открытой бронью билетов в реальном времени.</p>
+                </div>
+            </div>
+
+            <!-- Active Flight Cards -->
+            <div id="activeFlightsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Populated via Javascript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 8 & 9: LANDAI AIRPORT (Онлайн-табло и Информация) -->
+    <section id="airport" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="px-3 py-1 bg-landai-ice text-landai-blue rounded-lg text-xs font-bold uppercase tracking-wider">Landai International (LND)</span>
+                <h2 class="text-4xl font-extrabold text-landai-navy tracking-tight mt-2">Онлайн-табло Аэропорта Ландай</h2>
+                <p class="text-slate-600 mt-2">Оперативный статус всех прибывающих и вылетающих рейсов.</p>
+            </div>
+
+            <!-- Board Controls -->
+            <div class="bg-slate-900 rounded-3xl p-6 shadow-2xl text-white mb-12 border border-slate-800">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-6 border-b border-slate-800 pb-6">
+                    <!-- Tab Switcher -->
+                    <div class="flex bg-slate-800 p-1.5 rounded-2xl w-full md:w-auto">
+                        <button id="boardBtnDepartures" onclick="switchBoardType('departures')" class="flex-1 md:flex-none px-6 py-2.5 rounded-xl text-sm font-bold bg-landai-blue text-white shadow">
+                            <i class="fa-solid fa-plane-departure mr-2"></i> Вылеты
+                        </button>
+                        <button id="boardBtnArrivals" onclick="switchBoardType('arrivals')" class="flex-1 md:flex-none px-6 py-2.5 rounded-xl text-sm font-bold text-slate-400 hover:text-white">
+                            <i class="fa-solid fa-plane-arrival mr-2"></i> Прилёты
+                        </button>
+                    </div>
+
+                    <!-- Search Input -->
+                    <div class="relative w-full md:w-72">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="boardSearchInput" oninput="renderAirportBoard()" placeholder="Рейс или город..." class="w-full bg-slate-800 border border-slate-700 rounded-xl pl-11 pr-4 py-2.5 text-sm font-medium text-white placeholder-slate-400 focus:outline-none focus:border-landai-sky">
+                    </div>
+                </div>
+
+                <!-- Table Container -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="text-xs uppercase text-slate-400 border-b border-slate-800">
+                            <tr>
+                                <th class="pb-3 px-4">Время</th>
+                                <th class="pb-3 px-4">Рейс</th>
+                                <th class="pb-3 px-4">Направление</th>
+                                <th class="pb-3 px-4">Терминал</th>
+                                <th class="pb-3 px-4">Выход</th>
+                                <th class="pb-3 px-4 text-right">Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody id="airportBoardBody" class="divide-y divide-slate-800 font-mono">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Airport Info Section Grid -->
+            <div class="mt-16 bg-slate-50 rounded-3xl p-8 border border-slate-200">
+                <h3 class="text-2xl font-bold text-landai-navy mb-6 flex items-center">
+                    <i class="fa-solid fa-circle-info text-landai-blue mr-3"></i> Информация об Аэропорте Ландай
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+                        <div class="w-10 h-10 bg-landai-ice text-landai-blue rounded-xl flex items-center justify-center font-bold mb-3">
+                            <i class="fa-solid fa-passport"></i>
+                        </div>
+                        <h4 class="font-bold text-landai-navy mb-1">Терминалы A & B</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">Терминал A обслуживает внутренние рейсы по РФ. Терминал B — международный хаб с ускоренным паспортным контролем.</p>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+                        <div class="w-10 h-10 bg-landai-ice text-landai-blue rounded-xl flex items-center justify-center font-bold mb-3">
+                            <i class="fa-solid fa-couch"></i>
+                        </div>
+                        <h4 class="font-bold text-landai-navy mb-1">Бизнес-залы "LANĐAVIA Lounge"</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">Круглосуточный доступ для пассажиров Бизнес-класса: шведский стол, приватные слип-боксы и душевые кабины.</p>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+                        <div class="w-10 h-10 bg-landai-ice text-landai-blue rounded-xl flex items-center justify-center font-bold mb-3">
+                            <i class="fa-solid fa-square-parking"></i>
+                        </div>
+                        <h4 class="font-bold text-landai-navy mb-1">Парковка & Транзит</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">Крытый многоуровневый паркинг P1 на 2,500 мест и бесплатный автоматический шаттл между терминалами каждые 5 минут.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 10: HOTELS (Отели) -->
+    <section id="hotels" class="py-20 bg-landai-ice">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-landai-blue font-bold text-sm uppercase tracking-wider">Stay in Landai</span>
+                <h2 class="text-4xl font-extrabold text-landai-navy tracking-tight mt-1">Отели Ландая</h2>
+                <p class="text-slate-600 mt-2">Лучшие варианты проживания с эксклюзивными скидками для пассажиров LANĐAVIA.</p>
+            </div>
+
+            <!-- Hotels Grid -->
+            <div id="hotelsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Populated via Javascript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 11: PUBLIC TRANSPORT (Транспорт) -->
+    <section id="transport" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-landai-blue font-bold text-sm uppercase tracking-wider">Get Around</span>
+                <h2 class="text-4xl font-extrabold text-landai-navy tracking-tight mt-1">Городской Транспорт Ландая</h2>
+                <p class="text-slate-600 mt-2">Удобное сообщение между аэропортом, деловым центром и морским побережьем.</p>
+            </div>
+
+            <!-- Transport Tabs -->
+            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-200">
+                <div class="flex flex-wrap justify-center gap-2 mb-8 border-b border-slate-200 pb-4">
+                    <button onclick="switchTransportTab('bus')" id="transBtnBus" class="px-5 py-2.5 rounded-xl font-bold text-sm bg-landai-blue text-white shadow">
+                        🚌 Автобусы
+                    </button>
+                    <button onclick="switchTransportTab('metro')" id="transBtnMetro" class="px-5 py-2.5 rounded-xl font-bold text-sm text-slate-600 hover:bg-slate-200">
+                        🚇 Метро Ландая
+                    </button>
+                    <button onclick="switchTransportTab('taxi')" id="transBtnTaxi" class="px-5 py-2.5 rounded-xl font-bold text-sm text-slate-600 hover:bg-slate-200">
+                        🚕 Такси
+                    </button>
+                    <button onclick="switchTransportTab('express')" id="transBtnExpress" class="px-5 py-2.5 rounded-xl font-bold text-sm text-slate-600 hover:bg-slate-200">
+                        🚆 Аэроэкспресс
+                    </button>
+                </div>
+
+                <div id="transportContent" class="min-h-[220px]">
+                    <!-- Dynamic Transport Info injected via JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 12: FOOTER -->
+    <footer class="bg-landai-navy text-white pt-16 pb-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
+                
+                <!-- Col 1: Brand -->
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-landai-blue rounded-xl flex items-center justify-center text-white font-bold text-xl">
+                            L
+                        </div>
+                        <span class="text-2xl font-black tracking-widest">LANĐAVIA</span>
+                    </div>
+                    <p class="text-slate-400 text-sm max-w-sm leading-relaxed">
+                        Официальный национальный авиаперевозчик города Ландай, Сахалинская область. Высокие стандарты безопасности и восточное гостеприимство.
+                    </p>
+                    <div class="flex space-x-4 pt-2 text-slate-400">
+                        <a href="#" class="w-9 h-9 rounded-full bg-white/5 hover:bg-landai-blue flex items-center justify-center transition"><i class="fa-brands fa-vk"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-white/5 hover:bg-landai-blue flex items-center justify-center transition"><i class="fa-brands fa-telegram"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-white/5 hover:bg-landai-blue flex items-center justify-center transition"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Navigation -->
+                <div>
+                    <h4 class="font-bold text-sm uppercase tracking-wider text-slate-300 mb-4">Компания</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><a href="#" class="hover:text-white transition">О компания</a></li>
+                        <li><a href="#" class="hover:text-white transition">Пресс-служба</a></li>
+                        <li><a href="#" class="hover:text-white transition">Работа в LANĐAVIA</a></li>
+                        <li><a href="#" class="hover:text-white transition">Экология и устойчивость</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Passenger Info -->
+                <div>
+                    <h4 class="font-bold text-sm uppercase tracking-wider text-slate-300 mb-4">Пассажирам</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><a href="#" class="hover:text-white transition">Правила перевозки</a></li>
+                        <li><a href="#" class="hover:text-white transition">Багаж и ручная кладь</a></li>
+                        <li><a href="#" class="hover:text-white transition">Помощь и частые вопросы</a></li>
+                        <li><a href="#" class="hover:text-white transition">Безопасность полетов</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Legal -->
+                <div>
+                    <h4 class="font-bold text-sm uppercase tracking-wider text-slate-300 mb-4">Правовая информация</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><a href="#" class="hover:text-white transition">Политика конфиденциальности</a></li>
+                        <li><a href="#" class="hover:text-white transition">Условия использования</a></li>
+                        <li><a href="#" class="hover:text-white transition">Куки и данные</a></li>
+                        <li><a href="#" class="hover:text-white transition">Контакты и обратная связь</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Copyright -->
+            <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
+                <div>
+                    © 2043 LANĐAVIA Airlines. Все права защищены.
+                </div>
+                <div class="mt-2 sm:mt-0 font-medium">
+                    Российская Федерация, Ландай, Сахалинская область
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: BOOKING WIZARD MODAL -->
+    <div id="bookingModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden border border-slate-100 my-8">
+            
+            <!-- Modal Header -->
+            <div class="bg-landai-navy text-white p-6 flex justify-between items-center">
+                <div>
+                    <span class="text-xs text-sky-300 font-bold uppercase tracking-wider" id="bookingWizardStepTitle">Шаг 1 из 5</span>
+                    <h3 class="text-2xl font-extrabold" id="bookingModalHeaderTitle">Оформление билета</h3>
+                </div>
+                <button onclick="closeBookingModal()" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Step Progress Indicator -->
+            <div class="bg-slate-100 px-6 py-3 border-b border-slate-200">
+                <div class="flex justify-between items-center text-xs font-bold text-slate-500 max-w-2xl mx-auto">
+                    <span id="stepDot1" class="text-landai-blue font-extrabold">1. Рейс</span>
+                    <span>→</span>
+                    <span id="stepDot2">2. Пассажиры</span>
+                    <span>→</span>
+                    <span id="stepDot3">3. Место</span>
+                    <span>→</span>
+                    <span id="stepDot4">4. Багаж & Оплата</span>
+                    <span>→</span>
+                    <span id="stepDot5">5. Посадочный талон</span>
+                </div>
+            </div>
+
+            <!-- Modal Dynamic Body Content -->
+            <div class="p-6 sm:p-8 max-h-[70vh] overflow-y-auto" id="bookingModalBody">
+                <!-- Content is injected dynamically by JavaScript steps -->
+            </div>
+
+            <!-- Modal Footer Buttons -->
+            <div class="bg-slate-50 px-6 py-4 border-t border-slate-200 flex justify-between items-center" id="bookingModalFooter">
+                <button id="bookingPrevBtn" onclick="prevBookingStep()" class="px-5 py-2.5 rounded-xl font-bold text-sm text-slate-600 hover:bg-slate-200 hidden">
+                    Назад
+                </button>
+                <button id="bookingNextBtn" onclick="nextBookingStep()" class="ml-auto bg-landai-blue hover:bg-blue-800 text-white font-bold px-6 py-2.5 rounded-xl transition">
+                    Продолжить →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: FLEET SPECIFICATIONS & CABIN MAP MODAL -->
+    <div id="fleetModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden my-8">
+            <div id="fleetModalContent">
+                <!-- Dynamically loaded plane specifications and interactive cabin layout -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: INFLIGHT MAGAZINE READER MODAL -->
+    <div id="magazineModal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-lg hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-3xl h-[85vh] rounded-3xl shadow-2xl overflow-hidden flex flex-col">
+            <div class="p-4 bg-landai-navy text-white flex justify-between items-center">
+                <div class="font-bold text-sm">Vitlẻt · Бортовой журнал LANĐAVIA</div>
+                <button onclick="closeMagazineModal()" class="text-slate-300 hover:text-white px-3 py-1 font-bold">✕ Закрыть</button>
+            </div>
+            <div class="flex-grow bg-slate-100 p-8 flex flex-col justify-between items-center text-center overflow-y-auto" id="magPageContainer">
+                <!-- Magazine simulated pages -->
+            </div>
+            <div class="p-4 border-t border-slate-200 bg-white flex justify-between items-center">
+                <button onclick="changeMagPage(-1)" class="px-4 py-2 bg-slate-100 rounded-lg font-bold text-sm">← Пред. страница</button>
+                <span id="magPageIndicator" class="text-xs font-bold text-slate-500">Страница 1 из 128</span>
+                <button onclick="changeMagPage(1)" class="px-4 py-2 bg-landai-blue text-white rounded-lg font-bold text-sm">След. страница →</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ==========================================================================
+           MULTILINGUAL DICTIONARY (Lanđajzỹa, Russian, English, Vietnamese)
+           ========================================================================== */
+        const i18nData = {
+            ld: {
+                tagline_sub: "LANĐA AIRO-LINE",
+                nav_home: "Mäi-pô",
+                nav_tickets: "Billẽt",
+                nav_flights: "Rêis-yo",
+                nav_hub: "Lanđaj Hub",
+                nav_fleet: "Flôt-na",
+                nav_magazine: "Vitlẻt",
+                nav_airport: "Airo-Port",
+                nav_hotels: "Otẻli",
+                nav_transport: "Trans-vô",
+                hero_badge: "Glãvnỹ airo-flôt Lanđaj-sa",
+                hero_subtitle: "«Vôyagẽs fô-Lanđaj o-Rosỹa e all-vôld-sa.»",
+                tab_airplane: "Samo-lẽt",
+                tab_hotel: "Otẻl-vô",
+                trip_round: "Tuda-obrat",
+                trip_oneway: "Odno-sto",
+                lbl_from: "Ot-kuda",
+                lbl_to: "Kuda-vô",
+                lbl_dep_date: "Data-go",
+                lbl_ret_date: "Data-back",
+                lbl_passengers: "Passa-ji",
+                btn_find_flights: "Vỹsk-Rêis",
+                hub_badge: "Centrãl Airo-Hub",
+                hub_title: "Airo-Port Lanđaj-na",
+                hub_desc: "Lanđaj (Sakhalin Oblas) — modern transport hub. LANĐAVIA connects islands, mainlands, and Asia-Pacific capitals.",
+                hub_stat_dest: "Rêis-lini",
+                hub_stat_pax: "Passa/God",
+                hub_filter_label: "Map-filtr:",
+                hub_map_title: "Interaktĩv Route-Map",
+                mag_subtitle: "Artikl-yo fô vôyage, kultura Lanđaj e aviation.",
+                btn_read_online: "Citãt online",
+                btn_download_pdf: "Downlõad PDF",
+                fleet_title: "Flôt LANĐAVIA",
+                fleet_subtitle: "Eko-modern air-vessels pre-komfort."
+            },
+            ru: {
+                tagline_sub: "АВИАКОМПАНИЯ ЛАНДАЯ",
+                nav_home: "Главная",
+                nav_tickets: "Билеты",
+                nav_flights: "Рейсы",
+                nav_hub: "Наш хаб",
+                nav_fleet: "Наш флот",
+                nav_magazine: "Журнал",
+                nav_airport: "Аэропорт",
+                nav_hotels: "Отели",
+                nav_transport: "Транспорт",
+                hero_badge: "Главный авиаперевозчик Ландая",
+                hero_subtitle: "«Путешествуйте из Ландая по России и всему миру на крыльях комфорта и инноваций.»",
+                tab_airplane: "Самолёт",
+                tab_hotel: "Отель",
+                trip_round: "Туда и обратно",
+                trip_oneway: "В одну сторону",
+                lbl_from: "Откуда",
+                lbl_to: "Куда",
+                lbl_dep_date: "Дата вылета",
+                lbl_ret_date: "Дата возвращения",
+                lbl_passengers: "Пассажиры",
+                btn_find_flights: "Найти рейсы",
+                hub_badge: "Главный авиационный хаб",
+                hub_title: "Международный Аэропорт Ландай",
+                hub_desc: "Ландай (Сахалинская область, Россия) — ультрасовременный транспортно-логистический узел Дальнего Востока.",
+                hub_stat_dest: "Прямых направлений",
+                hub_stat_pax: "Пассажиров в год",
+                hub_filter_label: "Фильтр направлений:",
+                hub_map_title: "Интерактивная карта маршрутов",
+                mag_subtitle: "Эксклюзивные статьи о путешествиях, культуре Ландая и современной авиации.",
+                btn_read_online: "Читать онлайн",
+                btn_download_pdf: "Скачать журнал PDF",
+                fleet_title: "Наш флот",
+                fleet_subtitle: "Современные, тихие и высокоэффективные лайнеры ведущих мировых производителей."
+            },
+            en: {
+                tagline_sub: "LANDAI AIRLINES",
+                nav_home: "Home",
+                nav_tickets: "Tickets",
+                nav_flights: "Flights",
+                nav_hub: "Our Hub",
+                nav_fleet: "Fleet",
+                nav_magazine: "Magazine",
+                nav_airport: "Airport",
+                nav_hotels: "Hotels",
+                nav_transport: "Transport",
+                hero_badge: "Landai Flagship Carrier",
+                hero_subtitle: "«Travel from Landai across Russia and worldwide in absolute comfort and safety.»",
+                tab_airplane: "Flights",
+                tab_hotel: "Hotels",
+                trip_round: "Round trip",
+                trip_oneway: "One way",
+                lbl_from: "From",
+                lbl_to: "To",
+                lbl_dep_date: "Departure",
+                lbl_ret_date: "Return",
+                lbl_passengers: "Passengers",
+                btn_find_flights: "Search Flights",
+                hub_badge: "Central Aviation Hub",
+                hub_title: "Landai International Airport",
+                hub_desc: "Landai (Sakhalin Oblast, Russia) is a state-of-the-art Far Eastern transport hub connecting Asia and Europe.",
+                hub_stat_dest: "Direct Destinations",
+                hub_stat_pax: "Passengers / Year",
+                hub_filter_label: "Route Filter:",
+                hub_map_title: "Interactive Network Map",
+                mag_subtitle: "Exclusive stories about Landai culture, travel, and aviation tech.",
+                btn_read_online: "Read Online",
+                btn_download_pdf: "Download PDF",
+                fleet_title: "Our Fleet",
+                fleet_subtitle: "Ultra-modern, quiet, and eco-friendly airliners."
+            },
+            vi: {
+                tagline_sub: "HÃNG HÀNG KHÔNG LANDAI",
+                nav_home: "Trang chủ",
+                nav_tickets: "Vé máy bay",
+                nav_flights: "Chuyến bay",
+                nav_hub: "Trung tâm Hub",
+                nav_fleet: "Đội bay",
+                nav_magazine: "Tạp chí",
+                nav_airport: "Sân bay",
+                nav_hotels: "Khách sạn",
+                nav_transport: "Giao thông",
+                hero_badge: "Hãng hàng không quốc gia Landai",
+                hero_subtitle: "«Hành trình từ Landai đến Nga và khắp thế giới với sự thoải mái vượt trội.»",
+                tab_airplane: "Máy bay",
+                tab_hotel: "Khách sạn",
+                trip_round: "Khứ hồi",
+                trip_oneway: "Một chiều",
+                lbl_from: "Đi từ",
+                lbl_to: "Đến",
+                lbl_dep_date: "Ngày đi",
+                lbl_ret_date: "Ngày về",
+                lbl_passengers: "Hành khách",
+                btn_find_flights: "Tìm chuyến bay",
+                hub_badge: "Trung tâm Hàng không Quốc tế",
+                hub_title: "Sân bay Quốc tế Landai",
+                hub_desc: "Landai (Tỉnh Sakhalin, Nga) là trung tâm giao thông hiện đại kết nối Viễn Đông và châu Á.",
+                hub_stat_dest: "Điểm đến trực tiếp",
+                hub_stat_pax: "Hành khách / Năm",
+                hub_filter_label: "Bộ lọc tuyến bay:",
+                hub_map_title: "Bản đồ Mạng lưới Bay",
+                mag_subtitle: "Khám phá văn hóa Landai, du lịch và công nghệ hàng không.",
+                btn_read_online: "Đọc trực tuyến",
+                btn_download_pdf: "Tải PDF",
+                fleet_title: "Đội bay của chúng tôi",
+                fleet_subtitle: "Các dòng máy bay hiện đại, êm ái và tiết kiệm nhiên liệu."
+            }
+        };
+
+        let currentLang = 'ld';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            const langNames = { ld: 'Lanđajzỹa', ru: 'Русский', en: 'English', vi: 'Tiếng Việt' };
+            document.getElementById('currentLangLabel').innerText = langNames[lang];
+            
+            // Translate all elements with data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18nData[lang] && i18nData[lang][key]) {
+                    el.innerText = i18nData[lang][key];
+                }
+            });
+        }
+
+        /* Mobile Drawer Menu Toggle */
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        function closeMobileMenu() {
+            mobileMenu.classList.add('hidden');
+        }
+
+        /* Flight / Hotel Tab Switcher in Hero */
+        function toggleSearchTab(type) {
+            const flightBtn = document.getElementById('searchTabFlight');
+            const hotelBtn = document.getElementById('searchTabHotel');
+            const tripTypeBox = document.getElementById('tripTypeContainer');
+
+            if (type === 'flight') {
+                flightBtn.className = "px-5 py-2.5 rounded-lg text-sm font-bold bg-landai-blue text-white shadow-md transition-all";
+                hotelBtn.className = "px-5 py-2.5 rounded-lg text-sm font-bold text-slate-600 hover:text-landai-navy transition-all";
+                tripTypeBox.style.visibility = "visible";
+            } else {
+                hotelBtn.className = "px-5 py-2.5 rounded-lg text-sm font-bold bg-landai-blue text-white shadow-md transition-all";
+                flightBtn.className = "px-5 py-2.5 rounded-lg text-sm font-bold text-slate-600 hover:text-landai-navy transition-all";
+                tripTypeBox.style.visibility = "hidden";
+                document.getElementById('hotels').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function toggleReturnType(show) {
+            const returnBox = document.getElementById('returnDateBox');
+            returnBox.style.opacity = show ? '1' : '0.4';
+            returnBox.querySelector('input').disabled = !show;
+        }
+
+        /* ==========================================================================
+           DATA & DATA STRUCTURES (Fleet, Active Flights, Airport Board, Hotels)
+           ========================================================================== */
+        const fleetData = [
+            { id: 'a319', name: 'Airbus A319', seats: 144, range: '6,950 km', speed: '840 km/h', wingspan: '35.8 m', length: '33.8 m', mtow: '75.5 t', engines: '2x CFM56-5B', img: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=800&auto=format&fit=crop', desc: 'Компактный и маневренный лайнер для региональных и среднемагистральных маршрутов.' },
+            { id: 'a320neo', name: 'Airbus A320neo', seats: 180, range: '6,500 km', speed: '840 km/h', wingspan: '35.8 m', length: '37.5 m', mtow: '79.0 t', engines: '2x LEAP-1A / PW1100G', img: 'https://images.unsplash.com/photo-1520437358207-323b43b50729?q=80&w=800&auto=format&fit=crop', desc: 'Флагман среднемагистрального флота LANĐAVIA со сниженным расходом топлива на 20%.' },
+            { id: 'a321neo', name: 'Airbus A321neo', seats: 220, range: '7,400 km', speed: '840 km/h', wingspan: '35.8 m', length: '44.5 m', mtow: '97.0 t', engines: '2x LEAP-1A', img: 'https://images.unsplash.com/photo-1569154941061-e231b4725ef1?q=80&w=800&auto=format&fit=crop', desc: 'Просторный узкофюзеляжный лайнер высокой вместимости для загруженных международных линий.' },
+            { id: 'a330', name: 'Airbus A330-300', seats: 296, range: '11,750 km', speed: '870 km/h', wingspan: '60.3 m', length: '63.6 m', mtow: '242.0 t', engines: '2x Rolls-Royce Trent 700', img: 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?q=80&w=800&auto=format&fit=crop', desc: 'Дальнемагистральный шикокофюзеляжный самолет с персональными салонами Бизнес-класса.' },
+            { id: 'b737-7', name: 'Boeing 737-700', seats: 138, range: '6,230 km', speed: '850 km/h', wingspan: '35.8 m', length: '33.6 m', mtow: '70.0 t', engines: '2x CFM56-7B', img: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800&auto=format&fit=crop', desc: 'Надежный самолет для работы в сложных климатических условиях Дальнего Востока.' },
+            { id: 'b737-8', name: 'Boeing 737-800', seats: 175, range: '5,765 km', speed: '850 km/h', wingspan: '35.8 m', length: '39.5 m', mtow: '79.0 t', engines: '2x CFM56-7B27', img: 'https://images.unsplash.com/photo-1508672019048-805479767513?q=80&w=800&auto=format&fit=crop', desc: 'Классический лайнер с высокой частотой вылетов между Ландаем и ключевыми городами РФ.' },
+            { id: 'b737max9', name: 'Boeing 737 MAX 9', seats: 193, range: '6,570 km', speed: '850 km/h', wingspan: '35.9 m', length: '42.1 m', mtow: '88.3 t', engines: '2x CFM LEAP-1B', img: 'https://images.unsplash.com/photo-1542296332-2e4473faf563?q=80&w=800&auto=format&fit=crop', desc: 'Новое поколение повышенной комфортности с увеличительной дальностью полета.' },
+            { id: 'b757', name: 'Boeing 757', seats: 210, range: '7,250 km', speed: '850 km/h', wingspan: '38.0 m', length: '47.3 m', mtow: '115.6 t', engines: '2x Rolls-Royce RB211', img: 'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?q=80&w=800&auto=format&fit=crop', desc: 'Мощный и проверенный лайнер для длительных перелетов над океанскими маршрутами.' },
+            { id: 'b767', name: 'Boeing 767', seats: 260, range: '11,070 km', speed: '850 km/h', wingspan: '47.6 m', length: '54.9 m', mtow: '158.7 t', engines: '2x GE CF6-80C2', img: 'https://images.unsplash.com/photo-1517999144091-3d9dca6d1e43?q=80&w=800&auto=format&fit=crop', desc: 'Дальнемагистральный флот с двумя проходами для комфортных ночных рейсов.' },
+            { id: 'b787', name: 'Boeing 787-8', seats: 242, range: '13,620 km', speed: '903 km/h', wingspan: '60.1 m', length: '56.7 m', mtow: '227.9 t', engines: '2x GEnx-1B', img: 'https://images.unsplash.com/photo-1506015391300-4802dc74de2e?q=80&w=800&auto=format&fit=crop', desc: '«Dreamliner» — ультрасовременный флагман LANĐAVIA с увеличенной влажностью салона.' }
+        ];
+
+        const activeFlights = [
+            { flight: 'LA 204', from: 'Ландай (LND)', to: 'Камрань (CXR)', dep: '08:45', arr: '14:20', date: 'Сегодня', plane: 'Airbus A321neo', status: 'Продажа открыта', price: '38,500 ₽' },
+            { flight: 'LA 102', from: 'Ландай (LND)', to: 'Владивосток (VVO)', dep: '10:15', arr: '12:00', date: 'Сегодня', plane: 'Boeing 737-800', status: 'Заканчиваются места', price: '12,400 ₽' },
+            { flight: 'LA 808', from: 'Ландай (LND)', to: 'Пекин (PEK)', dep: '13:30', arr: '16:10', date: 'Завтра', plane: 'Airbus A320neo', status: 'Продажа открыта', price: '24,900 ₽' },
+            { flight: 'LA 501', from: 'Ландай (LND)', to: 'Москва (SVO)', dep: '16:00', arr: '18:45', date: 'Завтра', plane: 'Boeing 787-8', status: 'Продажа открыта', price: '29,000 ₽' },
+            { flight: 'LA 309', from: 'Ландай (LND)', to: 'Бангкок (BKK)', dep: '21:10', arr: '03:40', date: 'Завтра', plane: 'Airbus A330-300', status: 'Спецпредложение', price: '34,200 ₽' },
+            { flight: 'LA 114', from: 'Ландай (LND)', to: 'Хабаровск (KHV)', dep: '23:00', arr: '00:35', date: 'Завтра', plane: 'Airbus A319', status: 'Продажа открыта', price: '9,800 ₽' }
+        ];
+
+        const airportBoardData = [
+            { time: '08:45', flight: 'LA 204', route: 'Камрань (CXR)', terminal: 'B', gate: 'B04', status: 'Boarding', type: 'dep' },
+            { time: '09:10', flight: 'SU 628', route: 'Москва (SVO)', terminal: 'A', gate: 'A12', status: 'Scheduled', type: 'dep' },
+            { time: '09:30', flight: 'LA 102', route: 'Владивосток (VVO)', terminal: 'A', gate: 'A02', status: 'Departed', type: 'dep' },
+            { time: '10:05', flight: 'LA 808', route: 'Пекин (PEK)', terminal: 'B', gate: 'B01', status: 'Scheduled', type: 'dep' },
+            { time: '11:20', flight: 'VN 530', route: 'Ханой (HAN)', terminal: 'B', gate: 'B06', status: 'Delayed', type: 'dep' },
+            { time: '08:20', flight: 'LA 203', route: 'Камрань (CXR)', terminal: 'B', gate: 'B02', status: 'Arrived', type: 'arr' },
+            { time: '08:50', flight: 'LA 101', route: 'Владивосток (VVO)', terminal: 'A', gate: 'A01', status: 'Arrived', type: 'arr' },
+            { time: '10:40', flight: 'LA 502', route: 'Москва (SVO)', terminal: 'A', gate: 'A05', status: 'Scheduled', type: 'arr' }
+        ];
+
+        const hotelData = [
+            { name: 'Grand Landai Resort & Spa', stars: 5, rating: '4.9', dist: '12 км от аэропорта', price: '14,500 ₽ / ночь', img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=600&auto=format&fit=crop', desc: 'Роскошный отель на побережье с панорамными видами на залив Ландая.' },
+            { name: 'Landai Airport Sky Hotel', stars: 4, rating: '4.7', dist: '0.3 км (прямой переход)', price: '8,200 ₽ / ночь', img: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=600&auto=format&fit=crop', desc: 'Удобный транзитный отель в шаговой доступности от Терминала A.' },
+            { name: 'Sakhalin Bay Boutique Hotel', stars: 4, rating: '4.8', dist: '8 км от аэропорта', price: '10,100 ₽ / ночь', img: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=600&auto=format&fit=crop', desc: 'Уютный авторский отель в деловом центре города.' }
+        ];
+
+        /* ==========================================================================
+           RENDER FLEET GRID
+           ========================================================================== */
+        function renderFleetGrid() {
+            const container = document.getElementById('fleetGrid');
+            container.innerHTML = fleetData.map(plane => `
+                <div class="bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-md hover:shadow-2xl transition duration-300 flex flex-col group">
+                    <div class="relative h-48 overflow-hidden bg-slate-100">
+                        <img src="${plane.img}" alt="${plane.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute top-3 right-3 bg-landai-navy/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full">
+                            ${plane.seats} мест
+                        </span>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-black text-landai-navy mb-2">${plane.name}</h3>
+                            <p class="text-slate-600 text-xs leading-relaxed mb-4">${plane.desc}</p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                            <span class="text-xs text-slate-400 font-semibold">Дальность: ${plane.range}</span>
+                            <button onclick="openFleetModal('${plane.id}')" class="text-landai-blue font-bold text-sm hover:underline flex items-center">
+                                Подробнее <i class="fa-solid fa-arrow-right ml-1 text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        /* FLEET MODAL SHOWCASE WITH INTERACTIVE CABIN MAP */
+        function openFleetModal(planeId) {
+            const plane = fleetData.find(p => p.id === planeId);
+            if (!plane) return;
+
+            const modal = document.getElementById('fleetModal');
+            const content = document.getElementById('fleetModalContent');
+
+            content.innerHTML = `
+                <div class="bg-landai-navy text-white p-6 sm:p-8 flex justify-between items-start">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-sky-300">Характеристики ВС</span>
+                        <h2 class="text-3xl font-extrabold mt-1">${plane.name}</h2>
+                    </div>
+                    <button onclick="closeFleetModal()" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <div class="p-6 sm:p-8 max-h-[75vh] overflow-y-auto space-y-8">
+                    <!-- Images & Specs -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <img src="${plane.img}" alt="${plane.name}" class="w-full h-64 object-cover rounded-2xl shadow-lg">
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                <span class="text-xs text-slate-400 block font-semibold">Пассажировместимость</span>
+                                <span class="font-bold text-landai-navy text-base">${plane.seats} кресел</span>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                <span class="text-xs text-slate-400 block font-semibold">Дальность полета</span>
+                                <span class="font-bold text-landai-navy text-base">${plane.range}</span>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                <span class="text-xs text-slate-400 block font-semibold">Крейсерская скорость</span>
+                                <span class="font-bold text-landai-navy text-base">${plane.speed}</span>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                <span class="text-xs text-slate-400 block font-semibold">Двигатели</span>
+                                <span class="font-bold text-landai-navy text-base">${plane.engines}</span>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                <span class="text-xs text-slate-400 block font-semibold">Размах крыла / Длина</span>
+                                <span class="font-bold text-landai-navy text-base">${plane.wingspan} / ${plane.length}</span>
+                            </div>
+                            <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                <span class="text-xs text-slate-400 block font-semibold">Макс. взлетная масса</span>
+                                <span class="font-bold text-landai-navy text-base">${plane.mtow}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Cabin Map Preview -->
+                    <div class="bg-slate-100 p-6 rounded-2xl border border-slate-200">
+                        <h4 class="font-bold text-landai-navy mb-4 flex items-center">
+                            <i class="fa-solid fa-couch text-landai-blue mr-2"></i> Интерактивная схема салона ${plane.name}
+                        </h4>
+                        <div class="flex items-center space-x-6 text-xs mb-4">
+                            <span class="flex items-center"><span class="w-3 h-3 bg-amber-400 rounded-sm mr-1.5"></span> Бизнес-класс</span>
+                            <span class="flex items-center"><span class="w-3 h-3 bg-sky-400 rounded-sm mr-1.5"></span> Комфорт-класс</span>
+                            <span class="flex items-center"><span class="w-3 h-3 bg-slate-300 rounded-sm mr-1.5"></span> Эконом-класс</span>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 overflow-x-auto flex items-center space-x-2">
+                            <!-- Simulated Cockpit -->
+                            <div class="w-12 h-20 bg-slate-200 rounded-l-full flex items-center justify-center font-bold text-[10px] text-slate-500 uppercase tracking-tighter">
+                                Кабина
+                            </div>
+                            <!-- Seat Rows -->
+                            <div class="flex space-x-2">
+                                <!-- Business Class -->
+                                <div class="bg-amber-50 p-2 rounded-lg border border-amber-200 flex space-x-1">
+                                    <div class="space-y-1"><div class="w-5 h-5 bg-amber-400 rounded text-[9px] flex items-center justify-center font-bold text-white">1A</div><div class="w-5 h-5 bg-amber-400 rounded text-[9px] flex items-center justify-center font-bold text-white">1B</div></div>
+                                    <div class="space-y-1"><div class="w-5 h-5 bg-amber-400 rounded text-[9px] flex items-center justify-center font-bold text-white">2A</div><div class="w-5 h-5 bg-amber-400 rounded text-[9px] flex items-center justify-center font-bold text-white">2B</div></div>
+                                </div>
+                                <!-- Comfort Class -->
+                                <div class="bg-sky-50 p-2 rounded-lg border border-sky-200 flex space-x-1">
+                                    <div class="space-y-1"><div class="w-5 h-5 bg-sky-400 rounded text-[9px] flex items-center justify-center font-bold text-white">5A</div><div class="w-5 h-5 bg-sky-400 rounded text-[9px] flex items-center justify-center font-bold text-white">5B</div></div>
+                                    <div class="space-y-1"><div class="w-5 h-5 bg-sky-400 rounded text-[9px] flex items-center justify-center font-bold text-white">6A</div><div class="w-5 h-5 bg-sky-400 rounded text-[9px] flex items-center justify-center font-bold text-white">6B</div></div>
+                                </div>
+                                <!-- Economy Rows -->
+                                <div class="bg-slate-50 p-2 rounded-lg border border-slate-200 flex space-x-1">
+                                    <div class="space-y-1"><div class="w-5 h-5 bg-slate-300 rounded text-[9px] flex items-center justify-center font-bold text-slate-700">10A</div><div class="w-5 h-5 bg-slate-300 rounded text-[9px] flex items-center justify-center font-bold text-slate-700">10B</div></div>
+                                    <div class="space-y-1"><div class="w-5 h-5 bg-slate-300 rounded text-[9px] flex items-center justify-center font-bold text-slate-700">11A</div><div class="w-5 h-5 bg-slate-300 rounded text-[9px] flex items-center justify-center font-bold text-slate-700">11B</div></div>
+                                    <div class="space-y-1"><div class="w-5 h-5 bg-slate-300 rounded text-[9px] flex items-center justify-center font-bold text-slate-700">12A</div><div class="w-5 h-5 bg-slate-300 rounded text-[9px] flex items-center justify-center font-bold text-slate-700">12B</div></div>
+                                    <div class="space-y-1"><div class="w-5 h-5 bg-slate-300 rounded text-[9px] flex items-center justify-center font-bold text-slate-700">14A</div><div class="w-5 h-5 bg-slate-300 rounded text-[9px] flex items-center justify-center font-bold text-slate-700">14B</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeFleetModal() {
+            document.getElementById('fleetModal').classList.add('hidden');
+        }
+
+        /* ==========================================================================
+           RENDER ACTIVE FLIGHTS
+           ========================================================================== */
+        function renderActiveFlights() {
+            const container = document.getElementById('activeFlightsGrid');
+            container.innerHTML = activeFlights.map(f => `
+                <div class="bg-white rounded-3xl p-6 shadow-md border border-slate-200/80 hover:shadow-xl transition flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-extrabold px-3 py-1 bg-landai-ice text-landai-blue rounded-lg">${f.flight}</span>
+                            <span class="text-xs font-semibold px-2.5 py-1 bg-emerald-50 text-emerald-600 rounded-lg">${f.status}</span>
+                        </div>
+                        <div class="text-lg font-black text-landai-navy mb-1">${f.from} → ${f.to}</div>
+                        <div class="flex items-center space-x-4 text-xs text-slate-500 font-medium mb-4">
+                            <span><i class="fa-regular fa-clock text-landai-blue mr-1"></i> ${f.dep} - ${f.arr}</span>
+                            <span><i class="fa-solid fa-plane mr-1 text-slate-400"></i> ${f.plane}</span>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <div>
+                            <span class="block text-[10px] text-slate-400 font-semibold uppercase">Цена от</span>
+                            <span class="text-xl font-black text-landai-blue">${f.price}</span>
+                        </div>
+                        <button onclick="startBookingWizard('${f.flight}', '${f.from}', '${f.to}')" class="bg-landai-blue hover:bg-blue-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition">
+                            Купить билет
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        /* ==========================================================================
+           INTERACTIVE ROUTE MAP CANVAS
+           ========================================================================== */
+        const routeDestinations = [
+            // Domestic
+            { name: 'Оха', x: 0.82, y: 0.25, type: 'domestic' },
+            { name: 'Владивосток', x: 0.70, y: 0.65, type: 'domestic' },
+            { name: 'Хабаровск', x: 0.72, y: 0.50, type: 'domestic' },
+            { name: 'Благовещенск', x: 0.62, y: 0.45, type: 'domestic' },
+            { name: 'Петропавловск-Камчатский', x: 0.92, y: 0.20, type: 'domestic' },
+            { name: 'Иркутск', x: 0.45, y: 0.42, type: 'domestic' },
+            { name: 'Новосибирск', x: 0.32, y: 0.38, type: 'domestic' },
+            { name: 'Москва', x: 0.15, y: 0.30, type: 'domestic' },
+            // Intl
+            { name: 'Пекин', x: 0.58, y: 0.62, type: 'intl' },
+            { name: 'Шанхай', x: 0.62, y: 0.72, type: 'intl' },
+            { name: 'Гонконг', x: 0.56, y: 0.80, type: 'intl' },
+            { name: 'Ханой', x: 0.50, y: 0.84, type: 'intl' },
+            { name: 'Камрань', x: 0.52, y: 0.90, type: 'intl' },
+            { name: 'Бангкок', x: 0.46, y: 0.88, type: 'intl' },
+            { name: 'Пхукет', x: 0.44, y: 0.94, type: 'intl' }
+        ];
+
+        let currentMapFilter = 'all';
+
+        function filterMapRoutes(type) {
+            currentMapFilter = type;
+            document.getElementById('mapFilterAll').className = type === 'all' ? 'px-4 py-2 text-xs font-bold rounded-xl bg-landai-navy text-white shadow' : 'px-4 py-2 text-xs font-bold rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200';
+            document.getElementById('mapFilterDom').className = type === 'domestic' ? 'px-4 py-2 text-xs font-bold rounded-xl bg-landai-navy text-white shadow' : 'px-4 py-2 text-xs font-bold rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200';
+            document.getElementById('mapFilterIntl').className = type === 'intl' ? 'px-4 py-2 text-xs font-bold rounded-xl bg-landai-navy text-white shadow' : 'px-4 py-2 text-xs font-bold rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200';
+            drawRouteMap();
+        }
+
+        function drawRouteMap() {
+            const canvas = document.getElementById('routeMapCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            // Handle DPI sizing
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+
+            const hubX = canvas.width * 0.80;
+            const hubY = canvas.height * 0.35;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw connecting arc lines
+            routeDestinations.forEach(dest => {
+                if (currentMapFilter !== 'all' && dest.type !== currentMapFilter) return;
+
+                const dx = dest.x * canvas.width;
+                const dy = dest.y * canvas.height;
+
+                ctx.beginPath();
+                ctx.moveTo(hubX, hubY);
+                
+                // Curve Control Point
+                const cx = (hubX + dx) / 2;
+                const cy = (hubY + dy) / 2 - 30;
+
+                ctx.quadraticCurveTo(cx, cy, dx, dy);
+                ctx.strokeStyle = dest.type === 'domestic' ? 'rgba(56, 189, 248, 0.5)' : 'rgba(245, 158, 11, 0.6)';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                // Destination Dot
+                ctx.beginPath();
+                ctx.arc(dx, dy, 4, 0, Math.PI * 2);
+                ctx.fillStyle = dest.type === 'domestic' ? '#38BDF8' : '#F59E0B';
+                ctx.fill();
+
+                // Destination Label
+                ctx.fillStyle = '#94A3B8';
+                ctx.font = '10px Inter';
+                ctx.fillText(dest.name, dx + 7, dy + 3);
+            });
+
+            // Draw Central Hub: Landai
+            ctx.beginPath();
+            ctx.arc(hubX, hubY, 8, 0, Math.PI * 2);
+            ctx.fillStyle = '#0A369D';
+            ctx.fill();
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.stroke();
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 12px Inter';
+            ctx.fillText('LANĐAVIA Hub (Ландай)', hubX - 60, hubY - 14);
+        }
+
+        /* Resize Listener for Canvas */
+        window.addEventListener('resize', drawRouteMap);
+
+        /* ==========================================================================
+           AIRPORT ONLINE BOARD RENDER & FILTERS
+           ========================================================================== */
+        let currentBoardType = 'departures';
+
+        function switchBoardType(type) {
+            currentBoardType = type;
+            const depBtn = document.getElementById('boardBtnDepartures');
+            const arrBtn = document.getElementById('boardBtnArrivals');
+
+            if (type === 'departures') {
+                depBtn.className = "flex-1 md:flex-none px-6 py-2.5 rounded-xl text-sm font-bold bg-landai-blue text-white shadow";
+                arrBtn.className = "flex-1 md:flex-none px-6 py-2.5 rounded-xl text-sm font-bold text-slate-400 hover:text-white";
+            } else {
+                arrBtn.className = "flex-1 md:flex-none px-6 py-2.5 rounded-xl text-sm font-bold bg-landai-blue text-white shadow";
+                depBtn.className = "flex-1 md:flex-none px-6 py-2.5 rounded-xl text-sm font-bold text-slate-400 hover:text-white";
+            }
+            renderAirportBoard();
+        }
+
+        function renderAirportBoard() {
+            const body = document.getElementById('airportBoardBody');
+            const search = document.getElementById('boardSearchInput').value.toLowerCase();
+            
+            const targetType = currentBoardType === 'departures' ? 'dep' : 'arr';
+            const filtered = airportBoardData.filter(item => {
+                const matchesType = item.type === targetType;
+                const matchesQuery = item.flight.toLowerCase().includes(search) || item.route.toLowerCase().includes(search);
+                return matchesType && matchesQuery;
+            });
+
+            if (filtered.length === 0) {
+                body.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-500 font-sans">Рейсы не найдены</td></tr>`;
+                return;
+            }
+
+            body.innerHTML = filtered.map(row => {
+                let badgeClass = 'bg-slate-800 text-slate-300';
+                if (row.status === 'Boarding') badgeClass = 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+                if (row.status === 'Departed') badgeClass = 'bg-sky-500/20 text-sky-400';
+                if (row.status === 'Delayed') badgeClass = 'bg-rose-500/20 text-rose-400 border border-rose-500/30';
+
+                return `
+                    <tr class="hover:bg-slate-800/50 transition">
+                        <td class="py-3.5 px-4 font-bold text-white">${row.time}</td>
+                        <td class="py-3.5 px-4 font-bold text-landai-sky">${row.flight}</td>
+                        <td class="py-3.5 px-4 text-slate-200 font-sans font-medium">${row.route}</td>
+                        <td class="py-3.5 px-4 text-slate-400">${row.terminal}</td>
+                        <td class="py-3.5 px-4 text-slate-400">${row.gate}</td>
+                        <td class="py-3.5 px-4 text-right">
+                            <span class="px-2.5 py-1 rounded-md text-xs font-bold font-sans ${badgeClass}">${row.status}</span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        /* ==========================================================================
+           RENDER HOTELS & TRANSPORT TABS
+           ========================================================================== */
+        function renderHotels() {
+            const container = document.getElementById('hotelsGrid');
+            container.innerHTML = hotelData.map(h => `
+                <div class="bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-md flex flex-col justify-between">
+                    <div>
+                        <img src="${h.img}" alt="${h.name}" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-lg text-landai-navy">${h.name}</h3>
+                                <span class="text-xs bg-amber-50 text-amber-600 font-extrabold px-2 py-1 rounded-md">★ ${h.rating}</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mb-2"><i class="fa-solid fa-location-dot mr-1"></i> ${h.dist}</p>
+                            <p class="text-xs text-slate-600 leading-relaxed">${h.desc}</p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 flex items-center justify-between border-t border-slate-100 mt-4">
+                        <span class="font-bold text-landai-blue text-sm">${h.price}</span>
+                        <button onclick="alert('Переход к бронированию отеля ${h.name}')" class="px-4 py-2 bg-landai-navy text-white font-bold text-xs rounded-xl hover:bg-landai-blue transition">
+                            Забронировать
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function switchTransportTab(tab) {
+            const container = document.getElementById('transportContent');
+            
+            // Button Styles Reset
+            ['bus', 'metro', 'taxi', 'express'].forEach(t => {
+                const btn = document.getElementById(`transBtn${t.charAt(0).toUpperCase() + t.slice(1)}`);
+                if (btn) btn.className = t === tab ? "px-5 py-2.5 rounded-xl font-bold text-sm bg-landai-blue text-white shadow" : "px-5 py-2.5 rounded-xl font-bold text-sm text-slate-600 hover:bg-slate-200";
+            });
+
+            if (tab === 'bus') {
+                container.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100">
+                            <h4 class="font-bold text-landai-navy mb-2">Маршрут №101: Аэропорт → Морской Порт</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-3">Интервал: каждые 15 минут. Время в пути: 35 мин. Остановки у главных отелей.</p>
+                            <span class="text-xs font-bold text-landai-blue">Стоимость: 60 ₽</span>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100">
+                            <h4 class="font-bold text-landai-navy mb-2">Маршрут №205: Экспресс в Северный Район</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-3">Прямой маршрут по скоростному диаметру Ландая без промежуточных остановок.</p>
+                            <span class="text-xs font-bold text-landai-blue">Стоимость: 90 ₽</span>
+                        </div>
+                    </div>
+                `;
+            } else if (tab === 'metro') {
+                container.innerHTML = `
+                    <div class="bg-white p-6 rounded-2xl border border-slate-100">
+                        <h4 class="font-bold text-landai-navy mb-3">Линия 1 Метрополитена Ландая (Красная ветка)</h4>
+                        <p class="text-xs text-slate-600 mb-4">Станция «Аэропорт Ландай» напрямую соединена со скоростным подземным метро.</p>
+                        <div class="flex items-center space-x-2 overflow-x-auto pb-2 text-xs font-bold">
+                            <span class="px-3 py-1.5 bg-red-100 text-red-700 rounded-lg whitespace-nowrap">Аэропорт LND</span>
+                            <span>→</span>
+                            <span class="px-3 py-1.5 bg-slate-100 text-slate-700 rounded-lg whitespace-nowrap">Проспект Мира</span>
+                            <span>→</span>
+                            <span class="px-3 py-1.5 bg-slate-100 text-slate-700 rounded-lg whitespace-nowrap">Площадь Победы</span>
+                            <span>→</span>
+                            <span class="px-3 py-1.5 bg-slate-100 text-slate-700 rounded-lg whitespace-nowrap">Морской Вокзал</span>
+                        </div>
+                    </div>
+                `;
+            } else if (tab === 'taxi') {
+                container.innerHTML = `
+                    <div class="bg-white p-6 rounded-2xl border border-slate-100">
+                        <h4 class="font-bold text-landai-navy mb-2">Официальное такси LANĐAVIA Ride</h4>
+                        <p class="text-xs text-slate-600 mb-4">Стойки заказа расположенных в зоне прибытия Терминалов A и B.</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                            <div class="p-3 bg-slate-50 rounded-xl"><span class="block text-xs text-slate-400">Эконом</span><span class="font-bold text-landai-navy">от 450 ₽</span></div>
+                            <div class="p-3 bg-slate-50 rounded-xl"><span class="block text-xs text-slate-400">Комфорт+</span><span class="font-bold text-landai-navy">от 800 ₽</span></div>
+                            <div class="p-3 bg-slate-50 rounded-xl"><span class="block text-xs text-slate-400">Бизнес</span><span class="font-bold text-landai-navy">от 1,500 ₽</span></div>
+                        </div>
+                    </div>
+                `;
+            } else if (tab === 'express') {
+                container.innerHTML = `
+                    <div class="bg-white p-6 rounded-2xl border border-slate-100">
+                        <h4 class="font-bold text-landai-navy mb-2">Скоростной поезд «Ландай Экспресс»</h4>
+                        <p class="text-xs text-slate-600 mb-4">Комфортабельные двухэтажные поезда от аэропорта до Центрального Вокзала за 22 минуты.</p>
+                        <div class="text-xs font-bold text-slate-700 space-y-1">
+                            <p>• Отправление: каждые 30 минут с 05:00 до 00:00</p>
+                            <p>• Цена билета: 350 ₽ (Стандарт) / 700 ₽ (Бизнес)</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        /* ==========================================================================
+           INTERACTIVE STEP-BY-STEP BOOKING WIZARD
+           ========================================================================== */
+        let bookingState = {
+            step: 1,
+            flight: 'LA 204',
+            from: 'Ландай (LND)',
+            to: 'Камрань (CXR)',
+            paxName: '',
+            selectedSeat: '12A',
+            baggage: '23kg',
+            class: 'Economy'
+        };
+
+        function startBookingWizard(flightNum, from, to) {
+            bookingState.flight = flightNum || 'LA 204';
+            bookingState.from = from || 'Ландай (LND)';
+            bookingState.to = to || 'Камрань (CXR)';
+            bookingState.step = 1;
+            renderBookingStep();
+            document.getElementById('bookingModal').classList.remove('hidden');
+        }
+
+        function executeFlightSearch(e) {
+            e.preventDefault();
+            const fromSelect = document.getElementById('searchFrom');
+            const toSelect = document.getElementById('searchTo');
+            const fromText = fromSelect.options[fromSelect.selectedIndex].text;
+            const toText = toSelect.options[toSelect.selectedIndex].text;
+
+            startBookingWizard('LA ' + Math.floor(100 + Math.random() * 800), fromText, toText);
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').classList.add('hidden');
+        }
+
+        function nextBookingStep() {
+            if (bookingState.step < 5) {
+                bookingState.step++;
+                renderBookingStep();
+            } else {
+                closeBookingModal();
+            }
+        }
+
+        function prevBookingStep() {
+            if (bookingState.step > 1) {
+                bookingState.step--;
+                renderBookingStep();
+            }
+        }
+
+        function renderBookingStep() {
+            const body = document.getElementById('bookingModalBody');
+            const prevBtn = document.getElementById('bookingPrevBtn');
+            const nextBtn = document.getElementById('bookingNextBtn');
+            const stepTitle = document.getElementById('bookingWizardStepTitle');
+
+            // Update step indicators
+            stepTitle.innerText = `Шаг ${bookingState.step} из 5`;
+            for (let i = 1; i <= 5; i++) {
+                const dot = document.getElementById(`stepDot${i}`);
+                if (i === bookingState.step) {
+                    dot.className = "text-landai-blue font-extrabold underline";
+                } else if (i < bookingState.step) {
+                    dot.className = "text-emerald-600 font-bold";
+                } else {
+                    dot.className = "text-slate-400 font-normal";
+                }
+            }
+
+            prevBtn.classList.toggle('hidden', bookingState.step === 1);
+
+            if (bookingState.step === 1) {
+                nextBtn.innerText = "Выбрать этот рейс →";
+                body.innerHTML = `
+                    <div class="space-y-4">
+                        <h4 class="font-bold text-lg text-landai-navy">Подтверждение выбранного маршрута</h4>
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex justify-between items-center">
+                            <div>
+                                <span class="text-xs text-slate-400 font-bold uppercase">Рейс ${bookingState.flight}</span>
+                                <div class="text-xl font-black text-landai-navy">${bookingState.from} → ${bookingState.to}</div>
+                                <div class="text-xs text-slate-500 mt-1">Вылет: 15 Октября 2043 · Время: 08:45</div>
+                            </div>
+                            <span class="text-2xl font-black text-landai-blue">38,500 ₽</span>
+                        </div>
+
+                        <div class="pt-4">
+                            <label class="block text-xs font-bold text-slate-500 mb-2 uppercase">Класс обслуживания:</label>
+                            <div class="grid grid-cols-3 gap-4">
+                                <label class="border-2 border-landai-blue p-4 rounded-xl cursor-pointer bg-blue-50/50">
+                                    <input type="radio" name="classSel" value="Economy" checked class="accent-landai-blue">
+                                    <span class="block font-bold text-sm text-landai-navy mt-1">Economy</span>
+                                    <span class="text-[11px] text-slate-500">Багаж 23кг включен</span>
+                                </label>
+                                <label class="border border-slate-200 p-4 rounded-xl cursor-pointer hover:border-slate-300">
+                                    <input type="radio" name="classSel" value="Comfort" class="accent-landai-blue">
+                                    <span class="block font-bold text-sm text-landai-navy mt-1">Comfort</span>
+                                    <span class="text-[11px] text-slate-500">Увеличенный шаг кресел</span>
+                                </label>
+                                <label class="border border-slate-200 p-4 rounded-xl cursor-pointer hover:border-slate-300">
+                                    <input type="radio" name="classSel" value="Business" class="accent-landai-blue">
+                                    <span class="block font-bold text-sm text-landai-navy mt-1">Business</span>
+                                    <span class="text-[11px] text-slate-500">Премиум меню & Lounge</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (bookingState.step === 2) {
+                nextBtn.innerText = "К выбору места →";
+                body.innerHTML = `
+                    <div class="space-y-4 max-w-lg mx-auto">
+                        <h4 class="font-bold text-lg text-landai-navy">Данные пассажира</h4>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Имя и Фамилия (на латинице)</label>
+                            <input type="text" id="paxNameInput" placeholder="IVAN IVANOV" value="${bookingState.paxName}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-semibold text-landai-navy uppercase focus:outline-none focus:border-landai-blue">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">Серия и номер паспорта</label>
+                                <input type="text" placeholder="75 12 345678" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-semibold text-landai-navy focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">Дата рождения</label>
+                                <input type="date" value="1995-05-20" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-semibold text-landai-navy focus:outline-none">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (bookingState.step === 3) {
+                nextBtn.innerText = "К багажу и оплате →";
+                
+                // Save name from previous step
+                const nameInp = document.getElementById('paxNameInput');
+                if (nameInp && nameInp.value) bookingState.paxName = nameInp.value;
+
+                body.innerHTML = `
+                    <div>
+                        <h4 class="font-bold text-lg text-landai-navy mb-2">Выбор места на борту</h4>
+                        <p class="text-xs text-slate-500 mb-4">Нажмите на доступное кресло для выбора (Выбрано: <strong class="text-landai-blue" id="selectedSeatBadge">${bookingState.selectedSeat}</strong>)</p>
+                        
+                        <div class="bg-slate-100 p-6 rounded-2xl border border-slate-200 flex flex-col items-center">
+                            <!-- Seat Grid Preview -->
+                            <div class="grid grid-cols-6 gap-2 max-w-sm">
+                                ${['10A','10B','10C','10D','10E','10F','11A','11B','11C','11D','11E','11F','12A','12B','12C','12D','12E','12F'].map(seat => `
+                                    <button onclick="selectSeat('${seat}')" class="seat-btn w-10 h-10 rounded-lg font-bold text-xs border border-slate-300 ${bookingState.selectedSeat === seat ? 'selected' : 'bg-white hover:bg-slate-200'}">
+                                        ${seat}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (bookingState.step === 4) {
+                nextBtn.innerText = "Оплатить билет →";
+                body.innerHTML = `
+                    <div class="space-y-6 max-w-md mx-auto">
+                        <h4 class="font-bold text-lg text-landai-navy">Оплата и багаж</h4>
+                        
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2 text-sm">
+                            <div class="flex justify-between"><span class="text-slate-500">Пассажир:</span><span class="font-bold">${bookingState.paxName || 'IVAN IVANOV'}</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500">Маршрут:</span><span class="font-bold">${bookingState.from} → ${bookingState.to}</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500">Место:</span><span class="font-bold text-landai-blue">${bookingState.selectedSeat}</span></div>
+                            <div class="flex justify-between pt-2 border-t border-slate-200 font-black text-lg text-landai-navy">
+                                <span>Итого:</span><span>38,500 ₽</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-100 p-4 rounded-xl text-center text-xs text-slate-500">
+                            🔒 Демонстрационная платіжная система. Нажмите «Оплатить» для генерации посадочного талона.
+                        </div>
+                    </div>
+                `;
+            } else if (bookingState.step === 5) {
+                nextBtn.innerText = "Завершить";
+                body.innerHTML = `
+                    <div class="bg-white border-2 border-landai-blue rounded-3xl p-6 shadow-xl max-w-xl mx-auto space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                            <div>
+                                <span class="text-2xl font-black tracking-widest text-landai-navy">LANĐAVIA</span>
+                                <span class="block text-[10px] text-slate-400 font-bold uppercase">BOARDING PASS</span>
+                            </div>
+                            <span class="px-3 py-1 bg-emerald-100 text-emerald-700 font-extrabold text-xs rounded-lg">ПОДТВЕРЖДЕНО</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 text-xs font-mono">
+                            <div><span class="text-slate-400 block text-[10px]">PASSENGER</span><strong class="text-sm font-sans">${bookingState.paxName || 'IVAN IVANOV'}</strong></div>
+                            <div><span class="text-slate-400 block text-[10px]">FLIGHT</span><strong class="text-sm text-landai-blue">${bookingState.flight}</strong></div>
+                            <div><span class="text-slate-400 block text-[10px]">FROM</span><strong class="text-sm font-sans">${bookingState.from}</strong></div>
+                            <div><span class="text-slate-400 block text-[10px]">TO</span><strong class="text-sm font-sans">${bookingState.to}</strong></div>
+                            <div><span class="text-slate-400 block text-[10px]">SEAT</span><strong class="text-sm text-landai-blue font-bold">${bookingState.selectedSeat}</strong></div>
+                            <div><span class="text-slate-400 block text-[10px]">GATE</span><strong class="text-sm font-sans">B04</strong></div>
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-100 flex justify-center">
+                            <div class="tracking-widest font-mono text-xs text-slate-400">||| | ||||| || |||||| ||| ||||| ||||</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function selectSeat(seat) {
+            bookingState.selectedSeat = seat;
+            const badge = document.getElementById('selectedSeatBadge');
+            if (badge) badge.innerText = seat;
+            
+            document.querySelectorAll('.seat-btn').forEach(btn => {
+                if (btn.innerText.trim() === seat) {
+                    btn.classList.add('selected');
+                } else {
+                    btn.classList.remove('selected');
+                }
+            });
+        }
+
+        /* ==========================================================================
+           MAGAZINE READER MODAL LOGIC
+           ========================================================================== */
+        let magCurrentPage = 1;
+
+        function openMagazineViewer() {
+            magCurrentPage = 1;
+            renderMagPage();
+            document.getElementById('magazineModal').classList.remove('hidden');
+        }
+
+        function closeMagazineModal() {
+            document.getElementById('magazineModal').classList.add('hidden');
+        }
+
+        function changeMagPage(delta) {
+            magCurrentPage += delta;
+            if (magCurrentPage < 1) magCurrentPage = 1;
+            if (magCurrentPage > 128) magCurrentPage = 128;
+            renderMagPage();
+        }
+
+        function renderMagPage() {
+            const container = document.getElementById('magPageContainer');
+            const indicator = document.getElementById('magPageIndicator');
+            indicator.innerText = `Страница ${magCurrentPage} из 128`;
+
+            container.innerHTML = `
+                <div class="max-w-md my-auto space-y-4">
+                    <span class="text-xs font-bold uppercase text-landai-sky">Vitlẻt · Выпуск #142</span>
+                    <h3 class="text-2xl font-extrabold text-landai-navy">Раздел ${magCurrentPage}: Культура & Небо Ландая</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Настоящий интерактивный просмотрщик бортового журнала. В этом разделе читатели знакомятся с уникальными блюдами морепродуктов Сахалина и историей авиационного узла.
+                    </p>
+                    <div class="w-full h-48 bg-slate-200 rounded-2xl flex items-center justify-center font-bold text-slate-400 text-xs">
+                        [ Фотоиллюстрация страницы ${magCurrentPage} ]
+                    </div>
+                </div>
+            `;
+        }
+
+        function downloadPdfSimulation() {
+            alert('Загрузка файла: Vitlet_Q3_2043_LANĐAVIA.pdf (24.8 MB)');
+        }
+
+        /* ==========================================================================
+           INITIALIZATION ON WINDOW LOAD
+           ========================================================================== */
+        window.onload = function() {
+            renderFleetGrid();
+            renderActiveFlights();
+            drawRouteMap();
+            renderAirportBoard();
+            renderHotels();
+            switchTransportTab('bus');
+        };
+    </script>
+</body>
+</html>
