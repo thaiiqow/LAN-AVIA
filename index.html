@@ -241,7 +241,7 @@
                         <div class="relative">
                             <select id="searchTo" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-semibold text-landai-navy focus:ring-2 focus:ring-landai-blue focus:bg-white outline-none transition">
                                 <option value="CXR" selected>Камрань (CXR)</option>
-                                <option value="LND">Ландай (LND)</option>
+                                <option value="NRM">Ландай (NRM)</option>
                                 <option value="PEK">Пекин (PEK)</option>
                                 <option value="BKK">Бангкок (BKK)</option>
                                 <option value="VVO">Владивосток (VVO)</option>
@@ -959,25 +959,25 @@
            DATA & DATA STRUCTURES (Fleet, Active Flights, Airport Board, Hotels)
            ========================================================================== */
         const fleetData = [
-            { id: 'a319', name: 'Airbus A319', seats: 144, range: '6,950 km', speed: '840 km/h', wingspan: '35.8 m', length: '33.8 m', mtow: '75.5 t', engines: '2x CFM56-5B', img: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=800&auto=format&fit=crop', desc: 'Компактный и маневренный лайнер для региональных и среднемагистральных маршрутов.' },
-            { id: 'a320neo', name: 'Airbus A320neo', seats: 180, range: '6,500 km', speed: '840 km/h', wingspan: '35.8 m', length: '37.5 m', mtow: '79.0 t', engines: '2x LEAP-1A / PW1100G', img: 'https://images.unsplash.com/photo-1520437358207-323b43b50729?q=80&w=800&auto=format&fit=crop', desc: 'Флагман среднемагистрального флота LANĐAVIA со сниженным расходом топлива на 20%.' },
-            { id: 'a321neo', name: 'Airbus A321neo', seats: 220, range: '7,400 km', speed: '840 km/h', wingspan: '35.8 m', length: '44.5 m', mtow: '97.0 t', engines: '2x LEAP-1A', img: 'https://images.unsplash.com/photo-1569154941061-e231b4725ef1?q=80&w=800&auto=format&fit=crop', desc: 'Просторный узкофюзеляжный лайнер высокой вместимости для загруженных международных линий.' },
-            { id: 'a330', name: 'Airbus A330-300', seats: 296, range: '11,750 km', speed: '870 km/h', wingspan: '60.3 m', length: '63.6 m', mtow: '242.0 t', engines: '2x Rolls-Royce Trent 700', img: 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?q=80&w=800&auto=format&fit=crop', desc: 'Дальнемагистральный шикокофюзеляжный самолет с персональными салонами Бизнес-класса.' },
-            { id: 'b737-7', name: 'Boeing 737-700', seats: 138, range: '6,230 km', speed: '850 km/h', wingspan: '35.8 m', length: '33.6 m', mtow: '70.0 t', engines: '2x CFM56-7B', img: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=800&auto=format&fit=crop', desc: 'Надежный самолет для работы в сложных климатических условиях Дальнего Востока.' },
-            { id: 'b737-8', name: 'Boeing 737-800', seats: 175, range: '5,765 km', speed: '850 km/h', wingspan: '35.8 m', length: '39.5 m', mtow: '79.0 t', engines: '2x CFM56-7B27', img: 'https://images.unsplash.com/photo-1508672019048-805479767513?q=80&w=800&auto=format&fit=crop', desc: 'Классический лайнер с высокой частотой вылетов между Ландаем и ключевыми городами РФ.' },
-            { id: 'b737max9', name: 'Boeing 737 MAX 9', seats: 193, range: '6,570 km', speed: '850 km/h', wingspan: '35.9 m', length: '42.1 m', mtow: '88.3 t', engines: '2x CFM LEAP-1B', img: 'https://images.unsplash.com/photo-1542296332-2e4473faf563?q=80&w=800&auto=format&fit=crop', desc: 'Новое поколение повышенной комфортности с увеличительной дальностью полета.' },
-            { id: 'b757', name: 'Boeing 757', seats: 210, range: '7,250 km', speed: '850 km/h', wingspan: '38.0 m', length: '47.3 m', mtow: '115.6 t', engines: '2x Rolls-Royce RB211', img: 'https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?q=80&w=800&auto=format&fit=crop', desc: 'Мощный и проверенный лайнер для длительных перелетов над океанскими маршрутами.' },
-            { id: 'b767', name: 'Boeing 767', seats: 260, range: '11,070 km', speed: '850 km/h', wingspan: '47.6 m', length: '54.9 m', mtow: '158.7 t', engines: '2x GE CF6-80C2', img: 'https://images.unsplash.com/photo-1517999144091-3d9dca6d1e43?q=80&w=800&auto=format&fit=crop', desc: 'Дальнемагистральный флот с двумя проходами для комфортных ночных рейсов.' },
-            { id: 'b787', name: 'Boeing 787-8', seats: 242, range: '13,620 km', speed: '903 km/h', wingspan: '60.1 m', length: '56.7 m', mtow: '227.9 t', engines: '2x GEnx-1B', img: 'https://images.unsplash.com/photo-1506015391300-4802dc74de2e?q=80&w=800&auto=format&fit=crop', desc: '«Dreamliner» — ультрасовременный флагман LANĐAVIA с увеличенной влажностью салона.' }
+            { id: 'a319', name: 'Airbus A319', seats: 144, range: '6,950 km', speed: '840 km/h', wingspan: '35.8 m', length: '33.8 m', mtow: '75.5 t', engines: '2x CFM56-5B', img: 'https://1s4oyld5dc.ucarecd.net/6b8fb9b4-a82c-4475-9bf4-1230ee7640ab/', desc: 'Компактный и маневренный лайнер для региональных и среднемагистральных маршрутов.' },
+            { id: 'a320neo', name: 'Airbus A320neo', seats: 180, range: '6,500 km', speed: '840 km/h', wingspan: '35.8 m', length: '37.5 m', mtow: '79.0 t', engines: '2x LEAP-1A / PW1100G', img: 'https://1s4oyld5dc.ucarecd.net/10413a9f-cb3b-4f4b-8877-6732b9ee6ee7/', desc: 'Флагман среднемагистрального флота LANĐAVIA со сниженным расходом топлива на 20%.' },
+            { id: 'a321neo', name: 'Airbus A321neo', seats: 220, range: '7,400 km', speed: '840 km/h', wingspan: '35.8 m', length: '44.5 m', mtow: '97.0 t', engines: '2x LEAP-1A', img: 'https://1s4oyld5dc.ucarecd.net/3c854a4f-3dbf-4638-a6f1-1cf11c320386/', desc: 'Просторный узкофюзеляжный лайнер высокой вместимости для загруженных международных линий.' },
+            { id: 'a330', name: 'Airbus A330-300', seats: 296, range: '11,750 km', speed: '870 km/h', wingspan: '60.3 m', length: '63.6 m', mtow: '242.0 t', engines: '2x Rolls-Royce Trent 700', img: 'https://1s4oyld5dc.ucarecd.net/c06dfcc2-db05-4dc4-bd3a-4d514d9066a9/', desc: 'Дальнемагистральный шикокофюзеляжный самолет с персональными салонами Бизнес-класса.' },
+            { id: 'b737-7', name: 'Boeing 737-700', seats: 138, range: '6,230 km', speed: '850 km/h', wingspan: '35.8 m', length: '33.6 m', mtow: '70.0 t', engines: '2x CFM56-7B', img: 'https://1s4oyld5dc.ucarecd.net/e99442ba-5cb5-4627-9943-8e71d56b29ba/', desc: 'Надежный самолет для работы в сложных климатических условиях Дальнего Востока.' },
+            { id: 'b737-8', name: 'Boeing 737-800', seats: 175, range: '5,765 km', speed: '850 km/h', wingspan: '35.8 m', length: '39.5 m', mtow: '79.0 t', engines: '2x CFM56-7B27', img: 'https://1s4oyld5dc.ucarecd.net/6a7f4b47-ebd5-4f2c-977b-1b1723d7dc9c/', desc: 'Классический лайнер с высокой частотой вылетов между Ландаем и ключевыми городами РФ.' },
+            { id: 'b737max9', name: 'Boeing 737 MAX 9', seats: 193, range: '6,570 km', speed: '850 km/h', wingspan: '35.9 m', length: '42.1 m', mtow: '88.3 t', engines: '2x CFM LEAP-1B', img: 'https://1s4oyld5dc.ucarecd.net/3235e27b-cf3d-413c-be61-896d8adecddc/', desc: 'Новое поколение повышенной комфортности с увеличительной дальностью полета.' },
+            { id: 'b757', name: 'Boeing 757', seats: 210, range: '7,250 km', speed: '850 km/h', wingspan: '38.0 m', length: '47.3 m', mtow: '115.6 t', engines: '2x Rolls-Royce RB211', img: 'https://1s4oyld5dc.ucarecd.net/aa96f3fd-ec8a-4f54-8a63-421283525157/', desc: 'Мощный и проверенный лайнер для длительных перелетов над океанскими маршрутами.' },
+            { id: 'b767', name: 'Boeing 767', seats: 260, range: '11,070 km', speed: '850 km/h', wingspan: '47.6 m', length: '54.9 m', mtow: '158.7 t', engines: '2x GE CF6-80C2', img: 'https://1s4oyld5dc.ucarecd.net/9e5af59f-9636-448a-bf7a-9cbe7260a457/', desc: 'Дальнемагистральный флот с двумя проходами для комфортных ночных рейсов.' },
+            { id: 'b787', name: 'Boeing 787-8', seats: 242, range: '13,620 km', speed: '903 km/h', wingspan: '60.1 m', length: '56.7 m', mtow: '227.9 t', engines: '2x GEnx-1B', img: 'https://1s4oyld5dc.ucarecd.net/c4c98fec-e61d-46b4-b642-4e2be09ad8aa/', desc: '«Dreamliner» — ультрасовременный флагман LANĐAVIA с увеличенной влажностью салона.' }
         ];
 
         const activeFlights = [
-            { flight: 'LA 204', from: 'Ландай (LND)', to: 'Камрань (CXR)', dep: '08:45', arr: '14:20', date: 'Сегодня', plane: 'Airbus A321neo', status: 'Продажа открыта', price: '38,500 ₽' },
-            { flight: 'LA 102', from: 'Ландай (LND)', to: 'Владивосток (VVO)', dep: '10:15', arr: '12:00', date: 'Сегодня', plane: 'Boeing 737-800', status: 'Заканчиваются места', price: '12,400 ₽' },
-            { flight: 'LA 808', from: 'Ландай (LND)', to: 'Пекин (PEK)', dep: '13:30', arr: '16:10', date: 'Завтра', plane: 'Airbus A320neo', status: 'Продажа открыта', price: '24,900 ₽' },
-            { flight: 'LA 501', from: 'Ландай (LND)', to: 'Москва (SVO)', dep: '16:00', arr: '18:45', date: 'Завтра', plane: 'Boeing 787-8', status: 'Продажа открыта', price: '29,000 ₽' },
-            { flight: 'LA 309', from: 'Ландай (LND)', to: 'Бангкок (BKK)', dep: '21:10', arr: '03:40', date: 'Завтра', plane: 'Airbus A330-300', status: 'Спецпредложение', price: '34,200 ₽' },
-            { flight: 'LA 114', from: 'Ландай (LND)', to: 'Хабаровск (KHV)', dep: '23:00', arr: '00:35', date: 'Завтра', plane: 'Airbus A319', status: 'Продажа открыта', price: '9,800 ₽' }
+            { flight: 'LN 310', from: 'Ландай (LND)', to: 'Камрань (CXR)', dep: '08:45', arr: '14:20', date: '15.05', plane: 'Airbus A321neo', status: 'Продажа открыта', price: '38,500 ₽' },
+            { flight: 'LN 102', from: 'Ландай (LND)', to: 'Владивосток (VVO)', dep: '10:15', arr: '12:00', date: 'Сегодня', plane: 'Boeing 737-800', status: 'Заканчиваются места', price: '12,400 ₽' },
+            { flight: 'LN 808', from: 'Ландай (LND)', to: 'Пекин (PEK)', dep: '13:30', arr: '16:10', date: 'Завтра', plane: 'Airbus A320neo', status: 'Продажа открыта', price: '24,900 ₽' },
+            { flight: 'LN 501', from: 'Ландай (LND)', to: 'Москва (SVO)', dep: '16:00', arr: '18:45', date: 'Завтра', plane: 'Boeing 787-8', status: 'Продажа открыта', price: '29,000 ₽' },
+            { flight: 'LN 309', from: 'Ландай (LND)', to: 'Бангкок (BKK)', dep: '21:10', arr: '03:40', date: 'Завтра', plane: 'Airbus A330-300', status: 'Спецпредложение', price: '34,200 ₽' },
+            { flight: 'LN 114', from: 'Ландай (LND)', to: 'Хабаровск (KHV)', dep: '23:00', arr: '00:35', date: 'Завтра', plane: 'Airbus A319', status: 'Продажа открыта', price: '9,800 ₽' }
         ];
 
         const airportBoardData = [
@@ -1349,14 +1349,14 @@
                 container.innerHTML = `
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-white p-5 rounded-2xl border border-slate-100">
-                            <h4 class="font-bold text-landai-navy mb-2">Маршрут №101: Аэропорт → Морской Порт</h4>
-                            <p class="text-xs text-slate-600 leading-relaxed mb-3">Интервал: каждые 15 минут. Время в пути: 35 мин. Остановки у главных отелей.</p>
-                            <span class="text-xs font-bold text-landai-blue">Стоимость: 60 ₽</span>
+                            <h4 class="font-bold text-landai-navy mb-2">Маршрут №1: Цетральный Нуринам → Морской Порт</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-3">Интервал: каждые 15 минут. Время в пути: 24 мин.</p>
+                            <span class="text-xs font-bold text-landai-blue">Стоимость: 30 ₽</span>
                         </div>
                         <div class="bg-white p-5 rounded-2xl border border-slate-100">
-                            <h4 class="font-bold text-landai-navy mb-2">Маршрут №205: Экспресс в Северный Район</h4>
-                            <p class="text-xs text-slate-600 leading-relaxed mb-3">Прямой маршрут по скоростному диаметру Ландая без промежуточных остановок.</p>
-                            <span class="text-xs font-bold text-landai-blue">Стоимость: 90 ₽</span>
+                            <h4 class="font-bold text-landai-navy mb-2">Маршрут №117: Автовокзал → Новоюжное</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-3">Интервал: каждые 40 минут. Время в пути: 35 мин.</p>
+                            <span class="text-xs font-bold text-landai-blue">Стоимость: 30 ₽ - По Городу, 60 ₽ - За Городом </span>
                         </div>
                     </div>
                 `;
